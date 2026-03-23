@@ -6,7 +6,6 @@ import globals from "globals";
 import pluginJs from "@eslint/js";
 import tsEslint from "typescript-eslint";
 import pluginVue from "eslint-plugin-vue";
-import pluginCypress from "eslint-plugin-cypress";
 import eslintConfigPrettier from "eslint-config-prettier";
 
 export default defineConfig([
@@ -21,7 +20,6 @@ export default defineConfig([
   pluginJs.configs.recommended,
   ...tsEslint.configs.recommended,
   ...pluginVue.configs["flat/essential"],
-  pluginCypress.configs.recommended,
   {
     rules: {
       "@typescript-eslint/no-unused-vars": "warn",

@@ -1,24 +1,13 @@
 import { defineConfig } from "vite";
-import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
 import { nitro } from "nitro/vite";
 import { fileURLToPath, URL } from "node:url";
 
 export default defineConfig({
-  plugins: [tailwindcss(), vue(), nitro()],
+  plugins: [vue(), nitro()],
   nitro: {
     sourcemap: true,
-    serverEntry: "src/server/main.ts",
-    compatibilityDate: "2026-01-27",
-    cloudflare: {
-      deployConfig: true,
-      nodeCompat: true,
-    },
-    vercel: {
-      functions: {
-        runtime: "bun1.x",
-      },
-    },
+    serverEntry: process.env.NODE_ENV === "development" ? "src/server/main.local.ts" : "src/server/main.cloud.ts",
   },
   resolve: {
     alias: {

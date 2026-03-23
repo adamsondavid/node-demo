@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
+import { sValidator } from "@hono/standard-validator";
 import { z } from "zod";
 import { type Env } from "./env";
 
@@ -8,9 +8,9 @@ export type AppType = ReturnType<typeof createApp>;
 export function createApp(env: Env) {
   const greeting = env.GREETING ?? "Hello";
 
-  return new Hono().get(
+  return new Hono().basePath("/server").get(
     "/greeting",
-    zValidator(
+    sValidator(
       "query",
       z.object({
         name: z.string(),
