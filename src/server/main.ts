@@ -1,0 +1,14 @@
+import { defineHandler } from "nitro/h3";
+import { createApp } from "./app";
+import { EnvSchema } from "@/server/env";
+import { Hono } from "hono";
+
+let app;
+
+export default defineHandler((event) => {
+  // access cloudflare bindings if needed, wrap them in you own abstraction and them inject them into createApp
+  // const myBinding = event.context.cloudflare.MY_BINDING;
+  // ...
+  app ??= new Hono().route("/server", createApp(EnvSchema.parse(process.env)));
+  return app.fetch(event.req);
+});
