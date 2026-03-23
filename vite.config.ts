@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [vue(), nitro()],
   nitro: {
     sourcemap: true,
-    serverEntry: process.env.NODE_ENV === "development" ? "src/server/main.local.ts" : "src/server/main.cloud.ts",
+    serverEntry: "src/server/main.ts",
   },
   resolve: {
     alias: {

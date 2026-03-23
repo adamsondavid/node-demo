@@ -1,24 +1,28 @@
 import { Hono } from "hono";
 import { sValidator } from "@hono/standard-validator";
 import { z } from "zod";
-import { type Env } from "./env";
+import { Env } from "./env";
+import { drizzle } from "drizzle-orm/node-postgres";
+import * as schema from "./db";
+import { eq } from "drizzle-orm";
 
 export type AppType = ReturnType<typeof createApp>;
 
 export function createApp(env: Env) {
-  const greeting = env.GREETING ?? "Hello";
+  const db = drizzle(env.DATABASE_URL, { schema });
 
-  return new Hono().basePath("/server").get(
-    "/greeting",
+  return new Hono().get(
+    "/users/:userName",
     sValidator(
-      "query",
+      "param",
       z.object({
-        name: z.string(),
+        userName: z.string(),
       }),
     ),
-    (c) => {
-      const query = c.req.valid("query");
-      return c.json({ message: `${greeting} ${query.name}` });
+    async (c) => {
+      const { userName } = c.req.valid("param");
+      const res = await db.query.users.findMany({ where: eq(schema.users.name, userName) });
+      return c.json(res);
     },
   );
 }

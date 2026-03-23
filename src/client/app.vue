@@ -7,14 +7,14 @@ const server = useServer();
 const greeting = ref("loading...");
 
 onMounted(async () => {
-  const res = await server.greeting.$get({ query: { name: "VoMS" } });
+  const res = await server.users[":userName"].$get({ param: { userName: "Jan" } });
   if (res.ok) {
     const data = await res.json();
-    greeting.value = data.message;
+    greeting.value = JSON.stringify(data, null, 2);
   }
 });
 </script>
 
 <template>
-  <div>{{ greeting }}</div>
+  <pre>{{ greeting }}</pre>
 </template>

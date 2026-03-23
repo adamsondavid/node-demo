@@ -32,3 +32,5 @@ coverage
 .nitro
 
 .env
+
+dev-db
