@@ -4,17 +4,14 @@ import { onMounted, ref } from "vue";
 
 const server = useServer();
 
-const greeting = ref("loading...");
+const users = ref("loading...");
 
 onMounted(async () => {
-  const res = await server.users[":userName"].$get({ param: { userName: "Jan" } });
-  if (res.ok) {
-    const data = await res.json();
-    greeting.value = JSON.stringify(data, null, 2);
-  }
+  const res = await server.users.getByUserName({ name: "Jan" });
+  users.value = JSON.stringify(res, null, 2);
 });
 </script>
 
 <template>
-  <pre>{{ greeting }}</pre>
+  <pre>{{ users }}</pre>
 </template>
